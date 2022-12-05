@@ -8,6 +8,7 @@ float temperature = 0;
 float humidity = 0;
 const int ledPin = 4;
 
+asa
 void setup() {
   init();
   pinMode(ledPin, OUTPUT);
