@@ -1,4 +1,4 @@
-#include <utils.cpp> // load the utilities file which includes useful functions we wrote
+#include <utils.h> // load the utilities file which includes useful functions we wrote
 
 int Sensor = 18;  
 int LED = 19;

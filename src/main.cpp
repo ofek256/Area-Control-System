@@ -1,5 +1,8 @@
-#include <utils.cpp> // load the utilities file which includes useful functions we wrote
+#include <RCWL_Tal.h>
 
+
+
+/*
 long lastMsg = 0;
 char msg[50];
 int value = 0;
@@ -43,4 +46,4 @@ void loop() {
     Serial.println(humString);
     client.publish("esp32/humidity", humString);
   }
-}
+} */
