@@ -4,7 +4,6 @@ int Sensor = 18;
 int LED = 19;
 
 
-
 void setup() {
   init();
   pinMode (Sensor, INPUT); 
