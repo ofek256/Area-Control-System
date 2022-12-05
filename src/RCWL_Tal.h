@@ -15,7 +15,7 @@ void setup() {
 void loop() {
 //  cnctLoop();
   int val = digitalRead(Sensor); //Read Pin as input
-     while (val > 0)
+     if (val > 0)
      { 
         digitalWrite(LED, HIGH);
         Serial.println("Motion Detected");
@@ -23,7 +23,7 @@ void loop() {
         delay(1000);
        
      }
-     while (val == 0)
+     if (val == 0)
      {
         digitalWrite(LED, LOW);
         Serial.println("No Motion"); 
