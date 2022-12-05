@@ -13,7 +13,7 @@ const char* mqtt_server = "YOUR_MQTT_BROKER_IP_ADDRESS";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void init() { //void setup function with all the wifi and communications stuff
+void stpLoop() { //void setup function with all the wifi and communications stuff
   Serial.begin(115200);
   Serial.println();
   Serial.print("Connecting to ");
