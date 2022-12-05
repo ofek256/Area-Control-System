@@ -35,7 +35,6 @@ void init() { //void setup function with all the wifi and communications stuff
   Serial.println(mqtt_server); // print connection info and stuffs
 }
 
-
 void cnctLoop() { // basic function to keep the communication running in the loop
   if (!client.connected()) {
     // Loop until we're reconnected
