@@ -11,7 +11,6 @@ void setup() {
 
 }
 
-
 void loop() {
   cnctLoop();
   int val = digitalRead(Sensor); //Read Pin as input
