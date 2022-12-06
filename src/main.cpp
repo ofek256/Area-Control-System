@@ -4,7 +4,8 @@
 
 /* example setup
 void setup() {
-  init();
+  stpLoop();
+  Serial.begin(115200);
 
 }
 
