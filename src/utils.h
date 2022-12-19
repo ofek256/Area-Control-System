@@ -3,8 +3,8 @@
 #include <PubSubClient.h>
 #include <Wire.h>
 
-const char* ssid = "REPLACE_WITH_YOUR_SSID"; // wifi network name
-const char* password = "REPLACE_WITH_YOUR_PASSWORD"; // wifi network pass
+const char* ssid = "Robotica"; // wifi network name
+const char* password = "dcrf55rfvt66"; // wifi network pass
 
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
@@ -14,7 +14,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 void stpLoop() { //void setup function with all the wifi and communications stuff
-  Serial.begin(115200);
+//  Serial.begin(115200);
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -55,12 +55,12 @@ void cnctLoop() { // basic function to keep the communication running in the loo
   client.loop();
 }
 
-void sendData(bool status, int pms, char* topic) {
+/* void sendData(bool status, int pms, char* topic) {
     char pubString[2];
-    pubString[1] = status?1:0;
-    pubString[2] = (char)pms;
+    pubString[0] = status?1:0;
+    pubString[1] = (char)pms;
     client.publish(topic, pubString);
-}
+} */
 
 void callback(char* topic, byte* message, unsigned int length) { // this is if we need to recieve data with an arduino.
   Serial.print("Message arrived on topic: ");                    // we most likely wont so this wont be used.
