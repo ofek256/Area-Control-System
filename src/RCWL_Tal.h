@@ -6,7 +6,7 @@ bool state = true; // defines the last state of motion
 bool oldstate = true; 
 
 void setup() {
-  init();
+  stpLoop();
   pinMode (Sensor, INPUT); 
   pinMode (LED, OUTPUT);   
 
