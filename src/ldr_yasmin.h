@@ -13,7 +13,7 @@ void loop()
     ldrnow=analogRead(ldr_pin);
     Serial.print("ldr value: ");
     Serial.println  (ldrnow);
-    if (ldrnow>200)
+    if (ldrnow>dark)
     {
         Serial.println("Lights on. People in FRC/workshop");
         check=1;
@@ -25,4 +25,5 @@ void loop()
     }
     Serial.print("check= ");
     Serial.println  (check);
+    delay(1000);
 }
