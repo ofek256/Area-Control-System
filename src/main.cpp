@@ -1,5 +1,6 @@
-#include <RCWL_Tal.h>
+//#include <RCWL_Tal.h>
 //#include <Ultrasonic_Yasmin.h>
+#include <ldr_yasmin.h>
 
 
 /* example setup
