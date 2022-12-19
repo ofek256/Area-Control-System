@@ -115,6 +115,10 @@ int status_chage_checking(int count, int old, int now)
       to_return=0;
     }
   }
+  if(to_return!=1 && to_return!=0)
+  {
+    to_return=999;
+  }
   return to_return;
 }
 

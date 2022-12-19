@@ -3,6 +3,9 @@
 int ldrnow;
 const int dark = 300;
 int check;
+int count=0;
+int old=0;
+int changed;
 void setup()
 {
     pinMode(ldr_pin, INPUT);
@@ -26,5 +29,18 @@ void loop()
     }
     Serial.print("check= ");
     Serial.println  (check);
-    delay(1000);
+    changed= status_chage_checking(count, old, ldrnow);
+    if (changed==1)
+    {
+        Serial.println("changed!!!!!");
+        Serial.println("Lights are on. people in FRC/workshop.");
+    }
+    if (changed==0)
+    {
+        Serial.println("changed!!!!!");
+        Serial.println("Lights are off. no people in FRC/workshop.");
+    }
+    delay(3000);
+    count = 1;
+    old = ldrnow;
 }
