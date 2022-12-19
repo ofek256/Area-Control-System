@@ -1,12 +1,13 @@
 #include <utils.h>
-#define ldr_pin 19
+#define ldr_pin 32
 int ldrnow;
-const int dark = 200;
+const int dark = 300;
 int check;
 void setup()
 {
     pinMode(ldr_pin, INPUT);
     Serial.begin(115200);
+    Serial.print("ldr rewstdyfugiuvalue: ");
 }
 void loop()
 {
