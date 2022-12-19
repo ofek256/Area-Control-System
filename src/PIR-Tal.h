@@ -12,7 +12,7 @@ void setup()
  
 void loop()
 {
-    cnctloop(); 
+    cnctLoop(); 
     if(digitalRead(PIR_MOTION_SENSOR))//if it detects the moving people?
     {
         Serial.println("Hi,people is coming");
