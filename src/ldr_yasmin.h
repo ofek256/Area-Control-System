@@ -1,7 +1,7 @@
 #include <utils.h>
 #define ldr_pin 32
 int ldrnow;
-const int dark = 300;
+const int dark = 450;
 int check;
 int count=0;
 int old=0;
@@ -19,17 +19,15 @@ void loop()
     Serial.println  (ldrnow);
     if (ldrnow>dark)
     {
-        Serial.println("Lights on. People in FRC/workshop");
         check=1;
     }
     else
     {
-        Serial.println("Lights off. Room is empty");
         check=0;
     }
-    Serial.print("check= ");
-    Serial.println  (check);
-    changed= status_chage_checking(count, old, ldrnow);
+
+    changed= status_chage_checking(count, old, check);
+    
     if (changed==1)
     {
         Serial.println("changed!!!!!");
@@ -42,5 +40,5 @@ void loop()
     }
     delay(3000);
     count = 1;
-    old = ldrnow;
+    old = check;
 }
