@@ -7,14 +7,20 @@ int check;
 int count=0;
 int old=0;
 int changed;
+SerialPM pms(PMS7003, 23, 19);
 void setup()
 {
     pinMode(ldr_pin, INPUT);
     Serial.begin(115200);
+    pms.init();
     Serial.print("ldr rewstdyfugiuvalue: ");
 }
 void loop()
 {
+    pms.read();
+    Serial.print(F("PM1.0 "));Serial.print(pms.pm01);Serial.print(F(", "));
+    Serial.print(F("PM2.5 "));Serial.print(pms.pm25);Serial.print(F(", "));
+    Serial.print(F("PM10 ")) ;Serial.print(pms.pm10);Serial.println(F(" [ug/m3]"));
     ldrnow=analogRead(ldr_pin);
     Serial.print("ldr value: ");
     Serial.println  (ldrnow);
