@@ -39,13 +39,13 @@ void loop() {
      
       if (state != oldstate) 
       {
-       client.publish("esp32/RCWLsensor", "Motion Detected"); 
+       client.publish("esp32/RCWL", "Motion Detected"); 
        Serial.println ("motion detectad");
        
       }
       else 
       {
-        client.publish("esp32/RCWLsensor", "No Motion");
+        client.publish("esp32/RCWL", "No Motion");
         Serial.println ("motion no detecwtod");
         oldstate = state ; 
       }

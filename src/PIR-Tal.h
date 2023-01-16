@@ -27,13 +27,13 @@ void loop()
      {
       if (state != oldstate) 
       {
-       client.publish("esp32/PIRsensor", "Presence Detected"); 
+       client.publish("esp32/PIR", "Presence Detected"); 
        Serial.println ("Presence detectad");
        
       }
       else 
       {
-        client.publish("esp32/PIRsensor", "No Motion");
+        client.publish("esp32/PIR", "No Motion");
         Serial.println ("motion no detecwtod");
         oldstate = state ; 
       }
