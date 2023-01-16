@@ -2,18 +2,11 @@
 //#include <Ultrasonic_Yasmin.h>
 //#include <ldr_yasmin.h>
 //#include <PIR-Tal.h>
-#include <pms_yasmin.h>
-//#include <utils.h>
+//#include <pms_yasmin.h>
+#include <mqtt_test.h>
 
-/* void setup() {
-  Serial.begin(115200);
-}
 
-void loop() {
-  Serial.println("belda");
-  delay(100);
-} */
-/* example setup
+/* //example setup
 void setup() {
   stpLoop();
   Serial.begin(115200);
@@ -23,5 +16,4 @@ void setup() {
 void loop() {
   cnctLoop();
 
-  }
-} */
+  }  */

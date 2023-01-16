@@ -3,12 +3,13 @@
 #include <PubSubClient.h>
 #include <Wire.h>
 
-const char* ssid = "Robotica"; // wifi network name kfaryarok3
-const char* password = "dcrf55rfvt66"; // wifi network pass edcr66tgvv90
+const char* ssid = "kfaryarok3"; // wifi network name kfaryarok3 Robotica
+const char* password = "edcr66tgvv90"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
 
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
-const char* mqtt_server = "192.168.1.11";
+const char* mqtt_server = "192.168.101.81";
+const int mqtt_port = 4590;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -25,7 +26,7 @@ void stpLoop() { //void setup function with all the wifi and communications stuf
     delay(500);
     Serial.print("."); // write dots until connected
   }
-  client.setServer(mqtt_server, 4590); // setup mqtt connection
+  client.setServer(mqtt_server, mqtt_port); // setup mqtt connection
 
   Serial.println("");
   Serial.println("WiFi connected!");
