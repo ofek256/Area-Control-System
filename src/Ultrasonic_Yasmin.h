@@ -19,6 +19,7 @@ void setup()
   pinMode(echoPin, INPUT);
   Serial.begin(115200);
 }
+
 long getDistance() //הפונקציה שמודדת מרחק
 {
   digitalWrite(trigPin, LOW);
@@ -46,6 +47,7 @@ void loop()
       delay(77);
     }
   }
+  
   // חישוב המרחק הממוצע והדפסתו
   ave= sum*1.0/counter;
   Serial.print("average distance[cm] = ");

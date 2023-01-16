@@ -104,7 +104,7 @@ int status_chage_checking(int count, int old, int now)
     }
     else if (now==old)
     {
-      return 4;
+      return 4;//מסר רדומי שא ישיע ע הקוד
     }
   }
 
