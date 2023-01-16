@@ -16,7 +16,7 @@ void setup() {
 void loop() {
  cnctLoop();
   int val = digitalRead(Sensor); // Read Pin as input
-     if (val > 0)
+     if (val == 1)
      { 
       state = true; 
         digitalWrite(LED, HIGH);
@@ -33,21 +33,11 @@ void loop() {
     
      }
      
-
-    while(true) 
-    {
-     
       if (state != oldstate) 
       {
-       client.publish("esp32/RCWL", "Motion Detected"); 
-       Serial.println ("motion detectad");
-       
+       if (val == 1) client.publish("esp32/RCWL", "Motion Detected");
+       else if (val == 0) client.publish("esp32/RCWL", "No Motion");
+      //  Serial.println ("motion detectad");
       }
-      else 
-      {
-        client.publish("esp32/RCWL", "No Motion");
-        Serial.println ("motion no detecwtod");
-        oldstate = state ; 
-      }
+      oldstate = state;
      }
-}
