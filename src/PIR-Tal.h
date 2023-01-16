@@ -1,6 +1,6 @@
 #include <utils.h>
 /*macro definitions of PIR motion sensor pin and LED pin*/
-#define PIR_MOTION_SENSOR 18//Use pin 2 to receive the signal from the module
+#define PIR_MOTION_SENSOR 18//Use pin 18 to receive the signal from the module
 bool state = true; // defines the last state of motion 
 bool oldstate = true; 
 void setup()
