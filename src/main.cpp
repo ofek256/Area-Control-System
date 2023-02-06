@@ -1,10 +1,7 @@
 //#include <RCWL_Tal.h>
-<<<<<<< HEAD
-#include <Ultrasonic_Yasmin.h>
-=======
 //#include <Ultrasonic_Yasmin.h>
->>>>>>> ae5602fd798cba9a382a57e75a09439f8f20b927
-//#include <ldr_yasmin.h>
+//#include <Ultrasonic_Yasmin.h>
+#include <ldr_yasmin.h>
 //#include <PIR-Tal.h>
 //#include <pms_yasmin.h>
 //include <mqtt_test.h>
