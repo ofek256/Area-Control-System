@@ -126,15 +126,41 @@ boolean readPMSdata(Stream *s)
   */
   s->readBytes(buffer, 32);
 
+  /*
+    the pms data is like so:
+    2 first bytes:  headers.         (go into buffer, !!!NOT!!! into buffer_u16)
+    2 next bytes: frame length.      (they are the first two bytes in buffer_u16)
+    26 next bytes: data.             every two bytes are a measurement. HIGH before LOW
+    2 last bytes: check bytes.       (a sum of the highs to compare to. go into buffer_u16)
+
+    32 in total.
+
+    and the arrays:
+
+
+    buffer array: all 32 bytes seperately.
+
+
+    buffer_u16:
+    index     #1:                        frame length.               (buffer[2] + buffer[3])
+    indexes   #2-14 (13 in total):       data.                       (buffer[i] + buffer[i+1])
+    index     #15:                       check bytes.                (buffer[30] + buffer[31]) 
+
+  */
+
+
   // get checksum ready
   /*
-  i guess the last two bytes are stop bytes.
+  the last two bytes are check bytes! adding all the highs to compare with them, so we dont put
+  them in the calculation.
+
   we summerize the first 30 bytes of the arrey. i is an uint_8 because it cant be higher than the uint_8 
   in the arrey or its length, so we save memory.
   */
- //need to check if it is 30 bytes or actually 28
+
   for (uint8_t i = 0; i < 30; i++)
   {
+    Serial.println("i:    " + String(i) + "   buffer[i]:    " + String(buffer[i]));
     sum += buffer[i];
   }
 
@@ -144,10 +170,10 @@ boolean readPMSdata(Stream *s)
   /*
   the first 2 bytes are headers, the third is frame length (instead of using stop byes,
   we tell the reciever in edvence how many bytes it should read). 
-  we start inputing the bytes with the second byte. 
+  we start inputing the bytes with the third byte. 
 
 
-  note! check if the headers are also put in the buffer array!!!!!!!!!!!!!
+  !!!!!!!!!!   THE HEADERS ARE IN THE BUFFER ARRAY, BUT NOT THE BUFFER_U16   !!!!!!!!!!!!!
 
 
   the actual data is 2 bytes long. (the information from the sensor is 2 bytes long for each measurement)
@@ -162,6 +188,14 @@ boolean readPMSdata(Stream *s)
   uint16_t buffer_u16[15];
   for (uint8_t i = 0; i < 15; i++) {
     buffer_u16[i] = buffer[2 + i * 2 + 1];
+    Serial.println("i:  " + String(i));
+    Serial.println("2+i*2+1  (buffer's index):  " + String(2+i*2+1));
+    Serial.println("buffer_u16[low]:   " + String(buffer_u16[i]));
+    if (i==14)
+    {
+      Serial.println("buffer[31]=   " + String(buffer[2+i*2+1]));
+    }
+    delay(2000);
     /*
       the next line puts in the higher 8 bits, which are located in the next index of the old array.
       before adding it to the 8 lower bits already in the value of this index, we shift these 8 bits
@@ -169,6 +203,12 @@ boolean readPMSdata(Stream *s)
       then we add them to the lower byte, thus getting our 16 bits long measurement.
     */
     buffer_u16[i] += (buffer[2 + i * 2] << 8);
+    Serial.println("HIGH:  2+i*2  (buffer's index):  " + String(2+i*2));
+    Serial.println("buffer_u16[i]:   " + String(buffer_u16[i]));
+    if (i==14)
+    {
+      Serial.println("buffer[30]=   " + String(buffer[2+i*2]));
+    }
   }
 
   // put it into a nice struct :)
