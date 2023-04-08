@@ -23,8 +23,10 @@ the pointer is not pointing at the buffer directly.
 
 
 // Serial Port connections for PM2.5 Sensor
-#define RXD2 16 // To sensor TXD
-#define TXD2 17 // To sensor RXD
+#define RXD2 16 // (pin RX2 on the esp) To sensor TXD
+#define TXD2 17 // (pin TX2 on the esp) To sensor RXD
+//vcc to vin, gnd to gnd.
+
 
 void setup() {
   Serial.begin(115200);
@@ -81,10 +83,10 @@ boolean readPMSdata(Stream *s)
 
 
 
-  ok so i understood it: after cheking if we have ant bytes to read in the buffer, and
+  ok so i understood it: after cheking if we have any bytes to read in the buffer, and
   discovering we do, we wanna check if the next byte is the start byte, which is 0X42, before we read
   all the information. 
-  peek() allowes us to take a pick at the next byte without pulling it 
+  peek() allowes us to take a peek at the next byte without pulling it 
   out of the buffer, because when we read a byte its thrown away. 
   if the first byte isnt the start byte, there has been an error in transmition. 
       in that case, we read the next byte just to get it out of the buffer, we dont need it
@@ -114,7 +116,7 @@ boolean readPMSdata(Stream *s)
 
   /*
   we create an arrey of unsigned 8 bits ints named buffer with 32 spots, since we have at least 32 bytes
-  in this arrey we will tempererly store the data.
+  in this arrey we will temporarely store the data.
   */
   uint8_t buffer[32];
   uint16_t sum = 0;
@@ -150,7 +152,7 @@ boolean readPMSdata(Stream *s)
 
   the actual data is 2 bytes long. (the information from the sensor is 2 bytes long for each measurement)
   now we orgenize only the data we need out of all the stream in an array fitted for 16 bits index.
-  each following 2 bytes are  a different measurement and shall be put together.
+  each following 2 bytes are a different measurement and shall be put together.
   the higher byte is sent first, and that is why we read the 3rd line before reading the second. 
   by calculating the i in the first row, we can see the first byte being 
   put in the new array is the 3rd in the old one, for the reason i explained earlier.
