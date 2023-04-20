@@ -7,8 +7,9 @@ int val;
 void setup()
 {
     stpLoop(); //Begin wifi connection setup - (see utils file)
+    Serial.begin(115200); 
     pinMode(PIR_MOTION_SENSOR, INPUT);
-    Serial.begin(115200);  
+
  
 }
  
@@ -30,10 +31,10 @@ void loop()
 
 
 
- if (state != oldstate) // Publish sensor status loop
+ if (state != oldstate) 
       {
-       if (val == 1)  client.publish("esp32/PIR", "Presence Detected"); 
-       else if (val == 0) client.publish("esp32/RCWL", "No Motion");
+       if (val == 1) client.publish("esp32/PIR", "Motion Detected");
+       else if (val == 0) client.publish("esp32/PIR", "No Motion");
       }
       oldstate = state;
 

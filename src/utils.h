@@ -3,12 +3,12 @@
 #include <PubSubClient.h>
 #include <Wire.h>
 
-const char* ssid = "kfaryarok3"; // wifi network name kfaryarok3 Robotica
-const char* password = "edcr66tgvv90"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
+const char* ssid = "Oren Link"; // wifi network name kfaryarok3 Robotica
+const char* password = "oren0512"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
 
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
-const char* mqtt_server = "192.168.101.81";
+const char* mqtt_server = "192.168.1.177";
 const int mqtt_port = 4590;
 
 WiFiClient espClient;
