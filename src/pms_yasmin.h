@@ -21,7 +21,6 @@ the pointer is not pointing at the buffer directly.
 */
 #include <utils.h>
 
-
 // Serial Port connections for PM2.5 Sensor
 #define RXD2 16 // (pin RX2 on the esp) To sensor TXD
 #define TXD2 17 // (pin TX2 on the esp) To sensor RXD
@@ -37,7 +36,9 @@ void setup() {
   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
 }
 
-struct pms5003data
+
+
+struct pms7003data
 {
   uint16_t framelen;
   uint16_t pm10_standard, pm25_standard, pm100_standard;
@@ -46,11 +47,18 @@ struct pms5003data
   uint16_t unused;
   uint16_t checksum;
 };
-//struct pms5003data data; מחקתי את זה אחרי שקראתי על יצירה של כאלה
-//for some reason, deliting thee word struct colored the line white, but it works now. 
-//need to check if works with struct
-pms5003data data;
 
+
+//struct pms5003data data; מחקתי את זה אחרי שקראתי על יצירה של כאלה
+
+/*
+  we buils a struct called data with all the members empty, about to be filled.
+  the members are in the order of the measurements data bytes!!!!!
+*/
+pms7003data data;
+
+uint16_t number[12]= {1,2,3,4,5,6,7,8,9,10,11,12};
+bool higher[12];
 /*
 boolean readPMSdata(Stream *s) מחקתי כי זה לא אהב את ה- boolean
 לא מצאתי עוד מקום בקוד בו יש את המילה stream
@@ -211,14 +219,38 @@ boolean readPMSdata(Stream *s)
     }
   }
 
-  // put it into a nice struct :)
+  /*
+  memcpy coppies bytes from a one place in the memory to another.
+  memcy(pointer to the location to copy TO, pointer to the location to copy FROM, number of bytes)
+  we put the data in the struct we built before!
+  we do have a variable for framelength and for check!!!!!!!
+  the order of the struct member is the order of the data! frame length first, data second 
+  (also by its order) and check last!!!
+  */
   memcpy((void *)&data, (void *)buffer_u16, 30);
+
+  uint16_t *pointerArr[12]={&(data.pm10_standard), &(data.pm25_standard), &(data.pm100_standard), &(data.pm10_env), &(data.pm25_env), &(data.particles_03um), &(data.particles_05um), &(data.particles_10um), &(data.particles_25um), &(data.particles_50um), &(data.particles_100um)};
+
+
+//now we check if the sum equals the check bytes
 
   if (sum != data.checksum) {
     Serial.println("Checksum failure");
     return false;
   }
-  // success!
+  
+  for (int i=0; i<12; i++)
+  {
+    if (*pointerArr[i]>=number[i])
+    {
+      higher[i]=true;
+    }
+    else
+    {
+      higher[i]=false;
+    }
+  }
+
   return true;
 } 
 
@@ -248,6 +280,11 @@ void loop()
     Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(data.particles_50um);
     Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(data.particles_100um);
     Serial.println("---------------------------------------");
+  }
+  delay(10000);
+  for (int i=0; i<12; i++){
+    Serial.print(higher[i]);
+    Serial.print(", ");
   }
 }
 /*how can SERIAL_8N1 be undefined
