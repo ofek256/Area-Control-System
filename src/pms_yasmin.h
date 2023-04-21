@@ -57,8 +57,9 @@ struct pms7003data
 */
 pms7003data data;
 
-uint16_t number[12]= {1,2,3,4,5,6,7,8,9,10,11,12};
-bool higher[12];
+uint16_t number[12]= {1,222,3,4,590,6,7,8,9,1110,11,12};
+int higher[12];
+uint16_t *pointerArr[12];
 /*
 boolean readPMSdata(Stream *s) מחקתי כי זה לא אהב את ה- boolean
 לא מצאתי עוד מקום בקוד בו יש את המילה stream
@@ -243,19 +244,19 @@ boolean readPMSdata(Stream *s)
   {
     if (*pointerArr[i]>=number[i])
     {
-      higher[i]=true;
+      higher[i]=1;
     }
     else
     {
-      higher[i]=false;
+      higher[i]=0;
     }
   }
-
   return true;
 } 
 
 void loop() 
 {
+  Serial.println("voidloopin");
   //the stream provided is the one in the serial port between sensor and esp
   if (readPMSdata(&Serial2)) 
   {
@@ -264,27 +265,29 @@ void loop()
     Serial.println();
     Serial.println("---------------------------------------");
     Serial.println("Concentration Units (standard)");
-    Serial.print("PM 1.0: "); Serial.print(data.pm10_standard);
-    Serial.print("\t\tPM 2.5: "); Serial.print(data.pm25_standard);
-    Serial.print("\t\tPM 10: "); Serial.println(data.pm100_standard);
+    Serial.print("PM 1.0: "); Serial.print(*pointerArr[0]);
+    Serial.print("\t\tPM 2.5: "); Serial.print(*pointerArr[1]);
+    Serial.print("\t\tPM 10: "); Serial.println(*pointerArr[2]);
     Serial.println("---------------------------------------");
     Serial.println("Concentration Units (environmental)");
-    Serial.print("PM 1.0: "); Serial.print(data.pm10_env);
-    Serial.print("\t\tPM 2.5: "); Serial.print(data.pm25_env);
-    Serial.print("\t\tPM 10: "); Serial.println(data.pm100_env);
+    Serial.print("PM 1.0: "); Serial.print(*pointerArr[3]);
+    Serial.print("\t\tPM 2.5: "); Serial.print(*pointerArr[4]);
+    Serial.print("\t\tPM 10: "); Serial.println(*pointerArr[5]);
     Serial.println("---------------------------------------");
-    Serial.print("Particles > 0.3um / 0.1L air:"); Serial.println(data.particles_03um);
-    Serial.print("Particles > 0.5um / 0.1L air:"); Serial.println(data.particles_05um);
-    Serial.print("Particles > 1.0um / 0.1L air:"); Serial.println(data.particles_10um);
-    Serial.print("Particles > 2.5um / 0.1L air:"); Serial.println(data.particles_25um);
-    Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(data.particles_50um);
-    Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(data.particles_100um);
+    Serial.print("Particles > 0.3um / 0.1L air:"); Serial.println(*pointerArr[6]);
+    Serial.print("Particles > 0.5um / 0.1L air:"); Serial.println(*pointerArr[7]);
+    Serial.print("Particles > 1.0um / 0.1L air:"); Serial.println(*pointerArr[8]);
+    Serial.print("Particles > 2.5um / 0.1L air:"); Serial.println(*pointerArr[9]);
+    Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(*pointerArr[10]);
+    Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(*pointerArr[11]);
     Serial.println("---------------------------------------");
   }
   delay(10000);
+
   for (int i=0; i<12; i++){
     Serial.print(higher[i]);
     Serial.print(", ");
+    Serial.println();
   }
 }
 /*how can SERIAL_8N1 be undefined
