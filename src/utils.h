@@ -6,10 +6,8 @@
 const char* ssid = "Oren Link"; // wifi network name kfaryarok3 Robotica
 const char* password = "oren0512"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
 
-// Add your MQTT Broker IP address, example:
-//const char* mqtt_server = "192.168.1.144";
-const char* mqtt_server = "192.168.1.177";
-const int mqtt_port = 4590;
+const char* mqtt_server = "192.168.1.177"; // MQTT Broker (raspberry pi) IP address
+const int mqtt_port = 4590; 
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -56,15 +54,8 @@ void cnctLoop() { // basic function to keep the communication running in the loo
   client.loop();
 }
 
-/* void sendData(bool status, int pms, char* topic) {
-    char pubString[2];
-    pubString[0] = status?1:0;
-    pubString[1] = (char)pms;
-    client.publish(topic, pubString);
-} */
-
-void callback(char* topic, byte* message, unsigned int length) { // this is if we need to recieve data with an arduino.
-  Serial.print("Message arrived on topic: ");                    // we most likely wont so this wont be used.
+void callback(char* topic, byte* message, unsigned int length) { // this is if we need to recieve data with an arduino,
+  Serial.print("Message arrived on topic: ");                    // we most likely wont so this wont be used
   Serial.print(topic);
   Serial.print(". Message: ");
   String messageTemp;
@@ -74,18 +65,8 @@ void callback(char* topic, byte* message, unsigned int length) { // this is if w
     messageTemp += (char)message[i];
   }
   Serial.println();
-/*
-    Serial.print("Changing output to ");
-    if(messageTemp == "on"){
-      Serial.println("on");
-      digitalWrite(ledPin, HIGH);
-    }
-    else if(messageTemp == "off"){
-      Serial.println("off");
-      digitalWrite(ledPin, LOW);
-    } 
-  } */
 }
+
 
 int status_chage_checking(int count, int old, int now)
 {
@@ -123,4 +104,3 @@ int status_chage_checking(int count, int old, int now)
 
   return to_return;
 }
-
