@@ -1,17 +1,13 @@
-#include <utils.h>
-#define ldr_pin 32
+
+
 int ldrnow;
 const int dark = 450;
 int check;
 int count=0;
 int old=0;
 int changed;
-void setup()
-{
-    pinMode(ldr_pin, INPUT);
-    Serial.begin(115200);
-}
-void loop()
+#define ldr_pin 32
+void ldr_func()
 {
     ldrnow=analogRead(ldr_pin);
     Serial.print("ldr value: ");
