@@ -10,7 +10,6 @@ void setup()
 {
     pinMode(ldr_pin, INPUT);
     Serial.begin(115200);
-    Serial.print("ldr rewstdyfugiuvalue: ");
 }
 void loop()
 {
