@@ -25,8 +25,8 @@ the pointer is not pointing at the buffer directly.
 #define RXD2 16 // (pin RX2 on the esp) To sensor TXD
 #define TXD2 17 // (pin TX2 on the esp) To sensor RXD
 //vcc to vin, gnd to gnd.
-
-
+const int buzzer=18;
+bool success;
 void setup() {
   Serial.begin(115200);
 
@@ -34,8 +34,8 @@ void setup() {
   // Serial2.begin(baud-rate, protocol, RX pin, TX pin);
   //SERIAL_8N1      should work as it is a common serial protocol 
   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  pinMode(buzzer, OUTPUT);
 }
-
 
 
 struct pms7003data
@@ -59,7 +59,11 @@ pms7003data data;
 
 uint16_t number[12]= {1,222,3,4,590,6,7,8,9,1110,11,12};
 int higher[12];
-uint16_t *pointerArr[12];
+uint16_t* pointerArr[12]={&data.pm10_standard, &data.pm25_standard, &data.pm100_standard,
+ &data.pm10_env, &data.pm25_env, &data.pm100_env, &data.particles_03um,
+  &data.particles_05um, &data.particles_10um, &data.particles_25um,
+   &data.particles_50um, &data.particles_100um};
+int all_good;
 /*
 boolean readPMSdata(Stream *s) מחקתי כי זה לא אהב את ה- boolean
 לא מצאתי עוד מקום בקוד בו יש את המילה stream
@@ -70,6 +74,7 @@ https://reference.arduino.cc/reference/en/language/functions/communication/strea
 //A C++ stream is a flow of data into or out of a program
 boolean readPMSdata(Stream *s) 
 {
+  all_good=0;
   /*
   available() checks how many bytes are available to be read in the stream (s pointer, the -> replaces
   the *). if there are no lines to read the condition will be true, thus returning false to the loop
@@ -169,7 +174,7 @@ boolean readPMSdata(Stream *s)
 
   for (uint8_t i = 0; i < 30; i++)
   {
-    Serial.println("i:    " + String(i) + "   buffer[i]:    " + String(buffer[i]));
+    //Serial.println("i:    " + String(i) + "   buffer[i]:    " + String(buffer[i]));
     sum += buffer[i];
   }
 
@@ -197,6 +202,7 @@ boolean readPMSdata(Stream *s)
   uint16_t buffer_u16[15];
   for (uint8_t i = 0; i < 15; i++) {
     buffer_u16[i] = buffer[2 + i * 2 + 1];
+    /*
     Serial.println("i:  " + String(i));
     Serial.println("2+i*2+1  (buffer's index):  " + String(2+i*2+1));
     Serial.println("buffer_u16[low]:   " + String(buffer_u16[i]));
@@ -204,7 +210,7 @@ boolean readPMSdata(Stream *s)
     {
       Serial.println("buffer[31]=   " + String(buffer[2+i*2+1]));
     }
-    delay(2000);
+    */
     /*
       the next line puts in the higher 8 bits, which are located in the next index of the old array.
       before adding it to the 8 lower bits already in the value of this index, we shift these 8 bits
@@ -212,13 +218,16 @@ boolean readPMSdata(Stream *s)
       then we add them to the lower byte, thus getting our 16 bits long measurement.
     */
     buffer_u16[i] += (buffer[2 + i * 2] << 8);
+    /*
     Serial.println("HIGH:  2+i*2  (buffer's index):  " + String(2+i*2));
     Serial.println("buffer_u16[i]:   " + String(buffer_u16[i]));
     if (i==14)
     {
       Serial.println("buffer[30]=   " + String(buffer[2+i*2]));
     }
+    */
   }
+  delay(500);
 
   /*
   memcpy coppies bytes from a one place in the memory to another.
@@ -230,7 +239,6 @@ boolean readPMSdata(Stream *s)
   */
   memcpy((void *)&data, (void *)buffer_u16, 30);
 
-  uint16_t *pointerArr[12]={&(data.pm10_standard), &(data.pm25_standard), &(data.pm100_standard), &(data.pm10_env), &(data.pm25_env), &(data.particles_03um), &(data.particles_05um), &(data.particles_10um), &(data.particles_25um), &(data.particles_50um), &(data.particles_100um)};
 
 
 //now we check if the sum equals the check bytes
@@ -239,55 +247,82 @@ boolean readPMSdata(Stream *s)
     Serial.println("Checksum failure");
     return false;
   }
-  
-  for (int i=0; i<12; i++)
+    for (int i=0; i<12; i++)
   {
     if (*pointerArr[i]>=number[i])
     {
       higher[i]=1;
+      all_good++;
     }
     else
     {
       higher[i]=0;
     }
   }
+  
   return true;
 } 
 
 void loop() 
 {
   Serial.println("voidloopin");
+  success=(readPMSdata(&Serial2));
   //the stream provided is the one in the serial port between sensor and esp
-  if (readPMSdata(&Serial2)) 
+  if (success) 
   {
     // reading data was successful!
     //if successfuly read, the function will return true. with that, we start printing the information
     Serial.println();
     Serial.println("---------------------------------------");
     Serial.println("Concentration Units (standard)");
-    Serial.print("PM 1.0: "); Serial.print(*pointerArr[0]);
-    Serial.print("\t\tPM 2.5: "); Serial.print(*pointerArr[1]);
-    Serial.print("\t\tPM 10: "); Serial.println(*pointerArr[2]);
+    Serial.print("PM 1.0: "); Serial.print(data.pm10_standard);
+    Serial.print("\t\tPM 2.5: "); Serial.print(data.pm25_standard);
+    Serial.print("\t\tPM 10: "); Serial.println(data.pm100_standard);
     Serial.println("---------------------------------------");
     Serial.println("Concentration Units (environmental)");
-    Serial.print("PM 1.0: "); Serial.print(*pointerArr[3]);
-    Serial.print("\t\tPM 2.5: "); Serial.print(*pointerArr[4]);
-    Serial.print("\t\tPM 10: "); Serial.println(*pointerArr[5]);
+    Serial.print("PM 1.0: "); Serial.print(data.pm10_env);
+    Serial.print("\t\tPM 2.5: "); Serial.print(data.pm25_env);
+    Serial.print("\t\tPM 10: "); Serial.println(data.pm100_env);
     Serial.println("---------------------------------------");
-    Serial.print("Particles > 0.3um / 0.1L air:"); Serial.println(*pointerArr[6]);
-    Serial.print("Particles > 0.5um / 0.1L air:"); Serial.println(*pointerArr[7]);
-    Serial.print("Particles > 1.0um / 0.1L air:"); Serial.println(*pointerArr[8]);
-    Serial.print("Particles > 2.5um / 0.1L air:"); Serial.println(*pointerArr[9]);
-    Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(*pointerArr[10]);
-    Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(*pointerArr[11]);
+    Serial.print("Particles > 0.3um / 0.1L air:"); Serial.println(data.particles_03um);
+    Serial.print("Particles > 0.5um / 0.1L air:"); Serial.println(data.particles_05um);
+    Serial.print("Particles > 1.0um / 0.1L air:"); Serial.println(data.particles_10um);
+    Serial.print("Particles > 2.5um / 0.1L air:"); Serial.println(data.particles_25um);
+    Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(data.particles_50um);
+    Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(data.particles_100um);
     Serial.println("---------------------------------------");
-  }
-  delay(10000);
+  
 
-  for (int i=0; i<12; i++){
-    Serial.print(higher[i]);
-    Serial.print(", ");
+
+
+    for (int i=0; i<12; i++)
+    {
+      Serial.print("i=");
+      Serial.print(i);
+      Serial.print(" higher[i] =");
+      Serial.print(higher[i]);
+      Serial.print(" measurement= ");
+      Serial.print(*pointerArr[i]);
+      Serial.print(" numbers[i]=");
+      Serial.println(number[i]);
+    }
+    delay(2000);
+    if (all_good!=0)
+    {
+      tone(buzzer, 900);
+      Serial.println("evacuate");
+      for (int i=0; i<12; i++)
+      {
+        number[i]=10000;
+      }
+    }
+    else
+    {
+      noTone(buzzer);
+      Serial.println("danger is over");
+    }
     Serial.println();
+    delay(10000);
   }
 }
 /*how can SERIAL_8N1 be undefined
