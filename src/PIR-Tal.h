@@ -22,10 +22,13 @@ void loop()
         state = true; 
         val == 1;
     }
-    else
+    else 
+    {
         Serial.println("Watching");
         state = false;
         val == 0;
+    }
+
  delay(200);
 
 
