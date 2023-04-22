@@ -19,13 +19,13 @@ void loop() {
      if (digitalRead(Sensor)) { 
       state = true; 
         digitalWrite(LED, HIGH);
-        Serial.println("Motion Detected");
+        Serial.println("Presence Detected");
         delay(1000);
      }
      else {
       state = false; 
         digitalWrite(LED, LOW);
-        Serial.println("No Motion"); 
+        Serial.println("No Presence"); 
         delay(1000);
      }
      
