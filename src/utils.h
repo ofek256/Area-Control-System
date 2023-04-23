@@ -66,4 +66,3 @@ void callback(char* topic, byte* message, unsigned int length) { // this is if w
   }
   Serial.println();
 }
-

@@ -9,9 +9,8 @@
 #define buzzer 18
 void setup()
 {
-    stpLoop();
+    stpLoop(); //Begin wifi and serial connection - see utils file
     pinMode(ldr_pin, INPUT);
-    Serial.begin(115200);
     // Set up UART connection
     // Serial2.begin(baud-rate, protocol, RX pin, TX pin);
     //SERIAL_8N1      should work as it is a common serial protocol 
@@ -20,7 +19,7 @@ void setup()
 }
 void loop()
 {
-    cnctLoop();
+    cnctLoop(); //maintain wifi and serial connection - see utils file
     ldr_func();
     while(!com)
     {

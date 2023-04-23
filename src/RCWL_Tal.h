@@ -7,7 +7,7 @@ bool state = true; // defines the last state of motion
 bool oldstate = true; 
 
 void setup() {
-  stpLoop(); //Begin wifi connection setup - (see utils file)
+  stpLoop(); //Begin wifi and serial connection - see utils file
   pinMode (Sensor, INPUT); 
   pinMode (LED, OUTPUT);   
 
@@ -31,8 +31,8 @@ void loop() {
      
       if (state != oldstate) 
       {
-       if (val == 1) client.publish("esp32/RCWL", "RCWL (FLL): Motion Detected");
-       else if (val == 0) client.publish("esp32/RCWL", "RCWL (FLL): No Motion");
+       if (val == 1) client.publish("esp32/RCWL", "RCWL (FLL): Motion Detected.");
+       else if (val == 0) client.publish("esp32/RCWL", "RCWL (FLL): No Motion.");
       }
       oldstate = state;
      }

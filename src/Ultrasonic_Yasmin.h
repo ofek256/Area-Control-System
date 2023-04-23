@@ -14,7 +14,6 @@ void setup()
   stpLoop();
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  Serial.begin(115200);
 }
 
 long getDistance() //הפונקציה שמודדת מרחק
@@ -63,14 +62,14 @@ void loop()
   {
     {
       Serial.println("door is open");
-      client.publish("esp32/Ultrasonic", "the door is open");
+      client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is open.");
     }
   }
   if (changed==0)
   {
     {
       Serial.println("door is closed");
-      client.publish("esp32/Ultrasonic", "the door is closed");
+      client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is closed.");
     }
   }
   
