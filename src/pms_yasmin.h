@@ -47,9 +47,9 @@ pms7003data data;
 uint16_t number[12] = {1, 222, 3, 4, 590, 6, 7, 8, 9, 1110, 11, 12};
 int higher[12];
 uint16_t *pointerArr[12] = {&data.pm10_standard, &data.pm25_standard, &data.pm100_standard,
-                            &data.pm10_env, &data.pm25_env, &data.pm100_env, &data.particles_03um,
-                            &data.particles_05um, &data.particles_10um, &data.particles_25um,
-                            &data.particles_50um, &data.particles_100um};
+  &data.pm10_env, &data.pm25_env, &data.pm100_env, &data.particles_03um,
+  &data.particles_05um, &data.particles_10um, &data.particles_25um,
+  &data.particles_50um, &data.particles_100um};
 int all_good;
 /*
 boolean readPMSdata(Stream *s) מחקתי כי זה לא אהב את ה- boolean
@@ -293,6 +293,7 @@ void pms_func()
     {
       tone(buzzer, 900);
       Serial.println("evacuate");
+      client.publish("esp32/PMS", "evacuate and wait for the pollution to pass");
       alarm_on = 1;
       for (int i = 0; i < 12; i++)
       {
@@ -303,6 +304,7 @@ void pms_func()
     {
       noTone(buzzer);
       Serial.println("danger is over");
+      client.publish("esp32/PMS", "danger is over");
       alarm_on = 0;
     }
     Serial.println();

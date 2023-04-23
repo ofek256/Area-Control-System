@@ -9,6 +9,7 @@
 #define buzzer 18
 void setup()
 {
+    stpLoop();
     pinMode(ldr_pin, INPUT);
     Serial.begin(115200);
     // Set up UART connection
@@ -19,6 +20,7 @@ void setup()
 }
 void loop()
 {
+    cnctLoop();
     ldr_func();
     while(!com)
     {

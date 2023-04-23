@@ -25,12 +25,12 @@ void ldr_func()
     
     if (changed==1)
     {
-        Serial.println("changed!!!!!");
+        client.publish("esp32/LDR", "FRC/workshop: people are present");
         Serial.println("Lights are on. people in FRC/workshop.");
     }
     if (changed==0)
     {
-        Serial.println("changed!!!!!");
+        client.publish("esp32/LDR", "FRC/workshop: rooms are empty");
         Serial.println("Lights are off. no people in FRC/workshop.");
     }
     delay(3000);
