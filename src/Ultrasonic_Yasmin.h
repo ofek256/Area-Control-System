@@ -3,16 +3,11 @@
 #define trigPin 5
 #define echoPin 18
 
-long duration;
-long distance;
+long distance, duration, sum=0;
 int numberOfSamples = 10, counter=0;
-long sum=0; 
+int wasopen, state, changed, count=0;
 const int door = 50;
 double ave;
-int wasopen;
-int count=0;
-int check;
-int changed;
 
 void setup()
 {
@@ -57,12 +52,12 @@ void loop()
 
 //.בודקים אם הדלת פתוחה או סגורה
   if (ave>door)
-    check=1;
+    state=1;
   else
-    check=0;
+    state=0;
 
  //בודק אם השתנה המצב של הדלת. עובד רק אם זו המדידה השנייה והלאה, כי אחרת לא ידוע לנו המצב הקודם
-   changed= status_chage_checking(count, wasopen, check);
+  changed= status_chage_stateing(count, wasopen, state);
     
   if (changed==1)
   {
@@ -84,6 +79,6 @@ void loop()
   sum=0;
   count=1;
   // wasopen מסמל את המצב של הדלת לפי המדידה הקודמת. בסוף כל מדידה הוא שווה למה שהתקבל באותה מדידה
-  wasopen=check;
+  wasopen=state;
 }
 
