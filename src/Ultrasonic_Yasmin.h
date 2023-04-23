@@ -57,7 +57,7 @@ void loop()
     state=0;
 
  //בודק אם השתנה המצב של הדלת. עובד רק אם זו המדידה השנייה והלאה, כי אחרת לא ידוע לנו המצב הקודם
-  changed= status_chage_stateing(count, wasopen, state);
+  changed= status_chage_checking(count, wasopen, state);
     
   if (changed==1)
   {
