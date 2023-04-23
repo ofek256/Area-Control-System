@@ -31,8 +31,8 @@ void loop() {
      
       if (state != oldstate) 
       {
-       if (val == 1) client.publish("esp32/PIR", "Presence Detected");
-       else if (val == 0) client.publish("esp32/PIR", "No Presence");
+       if (val == 1) client.publish("esp32/PIR", "PIR (Media): Presence Detected");
+       else if (val == 0) client.publish("esp32/PIR", "PIR (Media): No Presence");
       }
       oldstate = state;
      }
