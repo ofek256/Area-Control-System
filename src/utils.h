@@ -3,8 +3,8 @@
 #include <PubSubClient.h>
 #include <Wire.h>
 
-const char* ssid = "Oren Link"; // wifi network name kfaryarok3 Robotica
-const char* password = "oren0512"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
+const char* ssid = "Robotica"; // wifi network name kfaryarok3 Robotica
+const char* password = "dcrf55rfvt66"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
 
 const char* mqtt_server = "192.168.1.177"; // MQTT Broker (raspberry pi) IP address
 const int mqtt_port = 4590; 
@@ -67,40 +67,3 @@ void callback(char* topic, byte* message, unsigned int length) { // this is if w
   Serial.println();
 }
 
-
-int status_chage_checking(int count, int old, int now)
-{
-  int to_return;
-  if (count>0)
-  {
-    if (now!=old) // האם השתנה המצב
-    {
-      if (now==1) // אם הדלת פתוחה
-      {
-        to_return=1;
-      } 
-      else // אם הדלת סגורה
-      {
-        to_return=0;
-      }
-    }
-    else if (now==old)
-    {
-      return 4;//מסר רדומי שא ישיע ע הקוד
-    }
-  }
-
-  if (count==0)//אם זו המדידה הראשונה ואין ערך של המדידה הקודמת ואני רוצה שבכל מקרה יודפס המצב הראשון
-  {
-    if (now==1)//האם הדלת פתוחה
-    {
-      to_return=1;
-    } 
-    if (now==0)//האם הדלת סגורה
-    {
-      to_return=0;
-    }
-  }
-
-  return to_return;
-}
