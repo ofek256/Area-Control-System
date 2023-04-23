@@ -288,17 +288,6 @@ void pms_func()
     Serial.println(data.particles_100um);
     Serial.println("---------------------------------------");
 
-    for (int i = 0; i < 12; i++)
-    {
-      Serial.print("i=");
-      Serial.print(i);
-      Serial.print(" higher[i] =");
-      Serial.print(higher[i]);
-      Serial.print(" measurement= ");
-      Serial.print(*pointerArr[i]);
-      Serial.print(" numbers[i]=");
-      Serial.println(number[i]);
-    }
     delay(2000);
     if (all_good != 0)
     {

@@ -1,5 +1,5 @@
 #include <utils.h>
-
+#include <ldr_and_ultrasonic_func.h>
 #define trigPin 5
 #define echoPin 18
 
@@ -12,9 +12,11 @@ double ave;
 int wasopen;
 int count=0;
 int check;
+int changed;
 
 void setup()
 {
+  stpLoop();
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   Serial.begin(115200);
@@ -36,7 +38,7 @@ long getDistance() //הפונקציה שמודדת מרחק
 
 void loop()
 {
-
+  cnctLoop();
   while(counter < numberOfSamples) //מזמנת את הפונקציה 10 פעמים בשביל לעשות ממוצע ולקבל תוצאה הגיונית ומדויקת
   {
     getDistance();
@@ -55,44 +57,27 @@ void loop()
 
 //.בודקים אם הדלת פתוחה או סגורה
   if (ave>door)
-  {
     check=1;
-  }
   else
-  {
     check=0;
-  }
 
  //בודק אם השתנה המצב של הדלת. עובד רק אם זו המדידה השנייה והלאה, כי אחרת לא ידוע לנו המצב הקודם
-  if (count>0)
+   changed= status_chage_checking(count, wasopen, check);
+    
+  if (changed==1)
   {
-    if (check!=wasopen) // האם השתנה המצב
     {
-      Serial.print("The door is ");
-      if (check==1) // אם הדלת פתוחה
-      {
-        Serial.println("open");
-      } 
-      else // אם הדלת סגורה
-      {
-        Serial.println("closed");
-      }
+      Serial.println("door is open");
+      client.publish("esp32/Ultrasonic", "the door is open");
     }
   }
-
-// במקרה שזו המדידה הראשונה, נרצה להדפיס בכל מקרה את מצב הדלת
-  if (count==0)
+  if (changed==0)
   {
-    if (check==1)
     {
-      Serial.println("the door is open");
-    } 
-    if (check==0)
-    {
-      Serial.println("the door is closed");
+      Serial.println("door is closed");
+      client.publish("esp32/Ultrasonic", "the door is closed");
     }
   }
-  
   
   delay(7000);
   counter = 0;

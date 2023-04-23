@@ -1,5 +1,5 @@
 
-
+#include <ldr_and_ultrasonic_func.h>
 int ldrnow;
 const int dark = 450;
 int check;
