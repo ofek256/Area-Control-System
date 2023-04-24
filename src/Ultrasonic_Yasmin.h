@@ -6,7 +6,7 @@
 long distance, duration, sum=0;
 int numberOfSamples = 10, counter=0;
 int wasopen, state, changed, count=0;
-const int door = 50;
+const int door = 15;
 double ave;
 
 void setup()
@@ -73,7 +73,7 @@ void loop()
     }
   }
   
-  delay(7000);
+  delay(2000);
   counter = 0;
   sum=0;
   count=1;
