@@ -1,7 +1,7 @@
 
 #include <ldr_and_ultrasonic_func.h>
 int ldrnow;
-const int dark = 450;
+const int dark = 550;
 int check;
 int count=0;
 int old=0;
