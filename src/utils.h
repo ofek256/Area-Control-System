@@ -6,7 +6,7 @@
 const char* ssid = "Robotica"; // wifi network name kfaryarok3 Robotica
 const char* password = "dcrf55rfvt66"; // wifi network pass edcr66tgvv90 dcrf55rfvt66
 
-const char* mqtt_server = "192.168.1.88"; // MQTT Broker (raspberry pi) IP address
+const char* mqtt_server = "raspberrypi.local"; // MQTT Broker (raspberry pi) IP address
 const int mqtt_port = 4590; 
 
 WiFiClient espClient;

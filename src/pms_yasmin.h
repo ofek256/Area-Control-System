@@ -293,7 +293,7 @@ void pms_func()
     {
       tone(buzzer, 900);
       Serial.println("evacuate");
-      client.publish("esp32/PMS", "PMS (FRC/Workshop): Critical air quality! Vacate FRC/Workshop rooms.");
+      client.publish("esp32/PMS", "PMS (FRC/Workshop): Critical air quality! Vacate the room immediately.");
       alarm_on = 1;
       for (int i = 0; i < 12; i++)
       {
