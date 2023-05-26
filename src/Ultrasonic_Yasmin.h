@@ -1,13 +1,11 @@
 #include <utils.h>
-#include <ldr_and_ultrasonic_func.h>
 #define trigPin 5
 #define echoPin 18
 
-long distance, duration, sum=0;
-int numberOfSamples = 10, counter=0;
-int wasopen, state, changed, count=0;
-const int door = 15;
-double ave;
+long distance, duration, sum = 0;
+int numberOfSamples = 10, counter = 0; // number of samples to average out
+const int door = 15;                   // the distance which the door is closed when the measurement is smaller than it (in cm)
+double avg;
 
 void setup()
 {
@@ -16,68 +14,51 @@ void setup()
   pinMode(echoPin, INPUT);
 }
 
-long getDistance() //הפונקציה שמודדת מרחק
+long getDistance() // func to measure distance from door
 {
   digitalWrite(trigPin, LOW);
-  delayMicroseconds(2); 
+  delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  
-  duration = pulseIn(echoPin,HIGH);
-  distance = duration/58.1;
+
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration / 58.1;
   return distance;
- 
 }
 
 void loop()
 {
   cnctLoop();
-  while(counter < numberOfSamples) //מזמנת את הפונקציה 10 פעמים בשביל לעשות ממוצע ולקבל תוצאה הגיונית ומדויקת
+  while (counter < numberOfSamples) // repeat the measurement multiple times to get an accurate avg
   {
     getDistance();
-    if(distance>3 && distance <300)
+    if (distance > 3 && distance < 300) // skip invalid measurements (anything over 300cm)
     {
-      sum+=distance;
+      sum += distance;
       counter++;
       delay(77);
     }
   }
-  
-  // חישוב המרחק הממוצע והדפסתו
-  ave= sum*1.0/counter;
-  Serial.print("average distance[cm] = ");
-  Serial.println(ave);
 
-//.בודקים אם הדלת פתוחה או סגורה
-  if (ave>door)
-    state=1;
-  else
-    state=0;
+  avg = sum * 1.0 / counter; // create the avg then print it
+  Serial.print("avg distance[cm] = ");
+  Serial.println(avg);
 
- //בודק אם השתנה המצב של הדלת. עובד רק אם זו המדידה השנייה והלאה, כי אחרת לא ידוע לנו המצב הקודם
-  changed= status_chage_checking(count, wasopen, state);
-    
-  if (changed==1)
-  {
-    {
-      Serial.println("door is open");
-      client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is open.");
-    }
-  }
-  if (changed==0)
-  {
-    {
-      Serial.println("door is closed");
-      client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is closed.");
-    }
-  }
-  
-  delay(2000);
+  sum = 0; // reset variables to prep for next loop
   counter = 0;
-  sum=0;
-  count=1;
-  // wasopen מסמל את המצב של הדלת לפי המדידה הקודמת. בסוף כל מדידה הוא שווה למה שהתקבל באותה מדידה
-  wasopen=state;
-}
 
+  if (avg > door) // check the result and send it to the pi via MQTT
+  {
+    Serial.println("door is closed");
+    client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is closed.");
+  }
+
+  else
+  {
+    Serial.println("door is closed");
+    client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is closed.");
+  }
+
+  delay(2000); // delay before looping again
+}
