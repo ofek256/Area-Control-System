@@ -50,8 +50,8 @@ void loop()
 
   if (avg > door) // check the result and send it to the pi via MQTT
   {
-    Serial.println("door is closed");
-    client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is closed.");
+    Serial.println("door is open");
+    client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is open.");
   }
 
   else
