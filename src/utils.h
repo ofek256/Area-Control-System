@@ -40,7 +40,7 @@ void cnctLoop() { // basic function to keep the communication running in the loo
     while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("ESP8266Client")) {
+    if (client.connect("ESP32Client")) {
       Serial.println("connected");
     } else {
       Serial.print("failed, error code: ");
