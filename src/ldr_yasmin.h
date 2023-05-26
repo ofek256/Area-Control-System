@@ -1,39 +1,20 @@
+// This file in now deprecated and no longer in use. Function has been transferred to ldr_and_pms.h.
 
-#include <ldr_and_ultrasonic_func.h>
-int ldrnow;
-const int dark = 550;
-int check;
-int count=0;
-int old=0;
-int changed;
+const int dark = 550; // const that defines the value which the lights are off below. for LDR.
 #define ldr_pin 32
-void ldr_func()
+
+void ldr()
 {
-    ldrnow=analogRead(ldr_pin);
-    Serial.print("ldr value: ");
-    Serial.println  (ldrnow);
-    if (ldrnow>dark)
+    Serial.println("ldr value: " + analogRead(ldr_pin));
+    if (analogRead(ldr_pin) > dark)
     {
-        check=1;
+        client.publish("esp32/LDR", "LDR (FRC/Workshop): Lights on. People are present.");
+        Serial.println("Lights are on. people in FRC/workshop.");
     }
     else
     {
-        check=0;
-    }
-
-    changed= status_chage_checking(count, old, check);
-    
-    if (changed==1)
-    {
-        client.publish("esp32/LDR", "LDR (FRC/Workshop): People are present.");
-        Serial.println("Lights are on. people in FRC/workshop.");
-    }
-    if (changed==0)
-    {
-        client.publish("esp32/LDR", "LDR (FRC/Workshop): People are not present."); 
+        client.publish("esp32/LDR", "LDR (FRC/Workshop): Lights off. People are not present.");
         Serial.println("Lights are off. no people in FRC/workshop.");
     }
-    delay(3000);
-    count = 1;
-    old = check;
+    delay(2000);
 }
