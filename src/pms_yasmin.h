@@ -57,7 +57,7 @@ boolean readPMSdata(Stream *s)
   return true; // func done successfuly
 }
 
-bool pms() // func to read and print the data transmitted, and return true / false according to air quality.
+int pms() // func to read and print the data transmitted, and return true / false according to air quality.
 {
   if (readPMSdata(&Serial2)) // reading data was successful!
   {
@@ -93,10 +93,12 @@ bool pms() // func to read and print the data transmitted, and return true / fal
     Serial.print("Particles > 10.0 um / 0.1L air:");
     Serial.println(data.particles_100um);
     Serial.println("---------------------------------------");
+
     Serial.println();
   }
-  if ((data.pm10_standard > 200) || (data.pm25_standard > 300) || (data.pm100_standard > 600))
-    return false;
+  else return 2;
+  if ((data.pm10_standard > 10) || (data.pm25_standard > 15) || (data.pm100_standard > 25))
+    return 1;
   else
-    return true;
+    return 0;
 }

@@ -1,8 +1,8 @@
 #include <utils.h>
 #include <pms_yasmin.h>
 
-const int dark = 550; // const that defines the value which the lights are off below. for LDR.
-
+const int dark = 1150; // const that defines the value which the lights are off below. for LDR.
+bool succ; //bool to test if reading the pms data worked or not
 #define TXD2 17 // pin TX2 on the esp to sensor RXD
 #define RXD2 16 // pin RX2 on the esp to sensor TXD
 #define buzzer 18
@@ -18,22 +18,26 @@ void setup()
 void loop()
 {
     cnctLoop(); // maintain wifi and serial connection - see utils file
-    pms();
-
-    if (pms()) // if pms returns true (air quality bad):
+    while (pms() == 2){ //loop to check if we read the PMS data successfully.
+        Serial.println("Failed to get data! Trying again...");
+        delay (5);
+        pms(); // it fails really often so we need to keep the test loop going
+    }
+    if (pms() == 1) // if pms returns 1 (air quality bad):
     {
-        tone(buzzer, 900);
+        digitalWrite(buzzer, 1);
         Serial.println("evacuate");
         client.publish("esp32/PMS", "PMS (FRC/Workshop): Critical air quality! Vacate the room immediately.");
     }
-    else // if pms returns false (air quality good):
+    else if (pms() == 0) // if pms returns 0 (air quality good):
     {
-        noTone(buzzer);
+        digitalWrite(buzzer, 0);
         Serial.println("OK");
         client.publish("esp32/PMS", "PMS (FRC/Workshop): Air quality OK.");
     }
 
-    Serial.println("ldr value: " + analogRead(ldr_pin)); // read and print the ldr's value
+    Serial.println("ldr value: "); // read and print the ldr's value
+    Serial.println(analogRead(ldr_pin));
     if (analogRead(ldr_pin) > dark) // send the info (lights are on or lights are off)
     {
         client.publish("esp32/LDR", "LDR (FRC/Workshop): Lights on. People are present.");
