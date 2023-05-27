@@ -97,7 +97,7 @@ int pms() // func to read and print the data transmitted, and return true / fals
     Serial.println();
   }
   else return 2;
-  if ((data.pm10_standard > 10) || (data.pm25_standard > 15) || (data.pm100_standard > 25))
+  if ((data.pm10_standard > 10) || (data.pm25_standard > 15) || (data.pm100_standard > 30))
     return 1;
   else
     return 0;

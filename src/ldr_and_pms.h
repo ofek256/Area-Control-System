@@ -19,8 +19,6 @@ void loop()
 {
     cnctLoop(); // maintain wifi and serial connection - see utils file
     while (pms() == 2){ //loop to check if we read the PMS data successfully.
-        Serial.println("Failed to get data! Trying again...");
-        delay (5);
         pms(); // it fails really often so we need to keep the test loop going
     }
     if (pms() == 1) // if pms returns 1 (air quality bad):
