@@ -33,22 +33,22 @@ void loop()
   while (counter < numberOfSamples) // repeat the measurement multiple times to get an accurate avg
   {
     getDistance();
-    if (distance > 3 && distance < 300) // skip invalid measurements (anything over 300cm)
+    if (distance > 0.5 && distance < 300) // skip invalid measurements (anything over 300cm)
     {
       sum += distance;
       counter++;
-      delay(77);
+      delay(100);
     }
   }
 
-  avg = sum * 1.0 / counter; // create the avg then print it
+  avg = sum / counter; // create the avg then print it
   Serial.print("avg distance[cm] = ");
   Serial.println(avg);
 
   sum = 0; // reset variables to prep for next loop
   counter = 0;
 
-  if (avg > door) // check the result and send it to the pi via MQTT
+  if (avg >= door) // check the result and send it to the pi via MQTT
   {
     Serial.println("door is open");
     client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is open.");
@@ -60,5 +60,5 @@ void loop()
     client.publish("esp32/Ultrasonic", "Ultrasonic (Entrance): The door is closed.");
   }
 
-  delay(2000); // delay before looping again
+  delay(2500); // delay before looping again
 }
